@@ -19,7 +19,7 @@ def generate_code_route():
 
 def generate_code_from_github(requirements):
     if not GITHUB_TOKEN:
-        return "GitHub token not found. Please set the GITHUB_TOKEN environment variable."
+        return "Please try again later. 🙏🙏🙏"
 
     headers = {
         'Authorization': f'token {GITHUB_TOKEN}',
@@ -40,9 +40,9 @@ def generate_code_from_github(requirements):
             code_response = requests.get(url, headers=headers)
             if code_response.status_code == 200:
                 return code_response.text
-        return "No code snippet found for the given requirements."
+        return "No code generate found for the given requirements. Please try again later. 🙏🙏🙏"
     except requests.RequestException as e:
-        return f"Error fetching code from GitHub: {e}"
+        return f"Error generate code: {e} Please try again later. 🙏🙏🙏"
 
 
 if __name__ == '__main__':
