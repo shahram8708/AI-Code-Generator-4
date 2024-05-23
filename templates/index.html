@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Code Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 600px;
+            background: white;
+            padding: 30px;
+            margin-top: 10px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        label {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        textarea {
+            width: 100%;
+            height: 200px;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: none;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        pre {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            overflow-x: auto;
+            display: none;
+        }
+
+        .copy-button {
+            display: none;
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .copy-button:hover {
+            background-color: #218838;
+        }
+        #generatedCode {
+        height: 200px;
+        overflow-y: auto; 
+    }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>AI Code Generator</h1>
+        <form id="codeForm">
+            <label for="requirements">Enter your requirements:</label>
+            <textarea id="requirements" name="requirements" placeholder="Describe what you need..."></textarea>
+            <button type="submit">Generate Code</button>
+        </form>
+        <pre id="generatedCode"></pre>
+        <button class="copy-button" onclick="copyCode()">Copy Code</button>
+    </div>
+
+    <script>
+        async function copyCode() {
+            const generatedCode = document.getElementById('generatedCode');
+            const textArea = document.createElement('textarea');
+            textArea.value = generatedCode.textContent;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            alert('Code copied to clipboard!');
+        }
+
+        document.getElementById('codeForm').addEventListener('submit', async function (event) {
+            event.preventDefault();
+            const requirements = document.getElementById('requirements').value;
+            const response = await fetch('/generate_code', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ requirements }),
+            });
+            const data = await response.json();
+            const generatedCode = document.getElementById('generatedCode');
+            generatedCode.textContent = data.code;
+            generatedCode.style.display = 'block';
+            document.querySelector('.copy-button').style.display = 'block';
+        });
+    </script>
+</body>
+</html>
