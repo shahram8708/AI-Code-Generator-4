@@ -114,10 +114,14 @@
             document.body.removeChild(textArea);
             alert('Code copied to clipboard!');
         }
-
+    
         document.getElementById('codeForm').addEventListener('submit', async function (event) {
             event.preventDefault();
             const requirements = document.getElementById('requirements').value;
+            if (!requirements.trim()) { 
+                alert('Please enter your requirements before generating code.');
+                return; 
+            }
             const response = await fetch('/generate_code', {
                 method: 'POST',
                 headers: {
@@ -132,5 +136,6 @@
             document.querySelector('.copy-button').style.display = 'block';
         });
     </script>
+    
 </body>
 </html>
